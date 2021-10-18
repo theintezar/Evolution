@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            
+
+        }
+        #container>div{
+            width: 20%;
+            height: 40%;
+            margin: 0.5rem;
+            
+        }
+        
+        #container img{
+            width: 100%;
+            
+        }
+        #search{
+            width: 450px;
+            height: 50px;
+            border-radius: 30px;
+            padding: 4px;
+            font-size: 30px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: 700;
+        }
+    </style>
+    
+</head>
+<body>
+
+    <input oninput="searchdata()" type="text" id="search" placeholder="Search hear..">
+
+    <div id="container"></div>
+    
+</body>
+</html>
+
+<script>
+    //1d2e9f285a104a7fa7d66345c19d45ca
+
+   // https://newsapi.org/v2/everything?q=Apple&from=2021-10-18&sortBy=popularity&apiKey=API_KEY
+
+   const container = document.getElementById("container");
+  
+ async function NewsArticle(name){
+      let res = await fetch(`https://newsapi.org/v2/everything?q=${name}&from=2021-09-18&sortBy=publishedAt&apiKey=1d2e9f285a104a7fa7d66345c19d45ca`) ;
+      let data = await res.json();
+      console.log("data:",data);
+      showNews(data.articles)
+  }
+  NewsArticle("popular")
+
+  function showNews(data){
+    container.innerHTML=null;
+    data.forEach(news => {
+        
+        const{urlToImage,title,content,author} = news;
+       let div = document.createElement("div");
+       let image = document.createElement('img');
+       image.src = urlToImage;
+       
+       let p1 = document.createElement('p');
+       p1.innerText = author;
+
+       let p2 = document.createElement('p');
+       p2.innerText = title;
+
+       let p3 = document.createElement('p');
+       p3.innerText = content;
+       div.append(image,p1,p2);
+       container.append(div);
+    });
+
+  }
+
+  function searchdata(){
+  var name = document.getElementById("search").value;
+
+  if(name) {
+    NewsArticle(name)
+  }else {
+    NewsArticle(popular);  
+  }
+  }
+
+</script>
